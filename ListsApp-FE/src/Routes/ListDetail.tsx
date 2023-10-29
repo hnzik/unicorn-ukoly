@@ -100,6 +100,8 @@ const ListDetail: React.FC = () => {
     }
 
     const onListNameChange = (listName: string) => {
+        if (listName.length === 0) return
+
         setListData({
             ...listData,
             name: listName,
