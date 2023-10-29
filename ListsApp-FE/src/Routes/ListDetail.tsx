@@ -47,10 +47,6 @@ const ListDetail: React.FC = () => {
         return true
     })
 
-    const userContext = useUser()
-
-    const isUserOwner = listData.users.find((user) => user.id === userContext?.user?.id)?.isOwner || false
-
     const handleCheckboxChange = (id: string) => {
         const item = listData.items.find((item) => item.id === id)
         if (!item) return
