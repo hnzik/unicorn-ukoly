@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import ListItem from '../Components/ListItem'
 import { List } from '../Types/List'
-import { useUser } from '../Providers/UserProvider'
 import ListHeader from '../Components/ListHeader'
 import useQuery from '../Hooks/useQuery'
 
