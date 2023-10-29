@@ -15,18 +15,15 @@ const ListItem: React.FC<ListItemProps> = ({ item, isUserOwner, handleCheckboxCh
             <div className='flex items-center'>
                 <input
                     type='checkbox'
-                    disabled={!isUserOwner}
                     checked={isCompleted}
                     onChange={() => handleCheckboxChange(id)}
                     className='form-checkbox h-5 w-5 text-blue-600 rounded focus:ring-blue-500'
                 />
                 <span className={`ml-2 select-none ${isCompleted ? 'line-through text-gray-400' : 'text-gray-700'}`}>{name}</span>
             </div>
-            {isUserOwner && (
-                <button className='text-red-500 hover:text-red-700 transition-colors' onClick={() => onRemove(id)}>
-                    Remove
-                </button>
-            )}
+            <button className='text-red-500 hover:text-red-700 transition-colors' onClick={() => onRemove(id)}>
+                Remove
+            </button>
         </div>
     )
 }
