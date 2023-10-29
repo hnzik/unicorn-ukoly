@@ -120,13 +120,7 @@ const ListDetail: React.FC = () => {
             />
 
             {filteredItems.map((item) => (
-                <ListItem
-                    key={item.id}
-                    item={item}
-                    isUserOwner={isUserOwner}
-                    onRemove={onRemove}
-                    handleCheckboxChange={handleCheckboxChange}
-                />
+                <ListItem key={item.id} item={item} onRemove={onRemove} handleCheckboxChange={handleCheckboxChange} />
             ))}
         </div>
     )

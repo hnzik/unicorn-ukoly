@@ -2,12 +2,11 @@ import { Item } from '../Types/List'
 
 interface ListItemProps {
     item: Item
-    isUserOwner: boolean
     onRemove: (id: string) => void
     handleCheckboxChange: (id: string) => void
 }
 
-const ListItem: React.FC<ListItemProps> = ({ item, isUserOwner, handleCheckboxChange, onRemove }) => {
+const ListItem: React.FC<ListItemProps> = ({ item, handleCheckboxChange, onRemove }) => {
     const { isCompleted, name, id } = item
 
     return (
