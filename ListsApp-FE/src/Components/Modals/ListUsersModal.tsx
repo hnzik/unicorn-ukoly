@@ -19,7 +19,7 @@ const ListUsersModal: React.FC<ListUsersModalProps> = ({ isOpen, onClose, users,
             <div className='relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white'>
                 <div className='mt-3 text-center'>
                     <h3 className='text-lg leading-6 font-medium text-gray-900'>Manage Users</h3>
-                    <div className='mt-2 px-7 py-3'>
+                    <div className='mt-2 px-4 py-3'>
                         <input
                             type='text'
                             placeholder='Enter user name'
@@ -28,7 +28,7 @@ const ListUsersModal: React.FC<ListUsersModalProps> = ({ isOpen, onClose, users,
                             onChange={(e) => setUserName(e.target.value)}
                         />
                         <button
-                            className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+                            className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full'
                             onClick={() => {
                                 onAddUser(userName)
                                 setUserName('')

@@ -2,41 +2,15 @@ import { useState } from 'react'
 import ListItem from '../Components/ListItem'
 import { List } from '../Types/List'
 import ListHeader from '../Components/ListHeader'
-import useQuery from '../Hooks/useQuery'
+import { useLists } from '../Providers/ListProvider'
+import { useParams } from 'react-router'
 
 const ListDetail: React.FC = () => {
-    // We would use this to fetch data from the server
-    //const query = useQuery()
-    //query.get('id')
+    const { id } = useParams()
 
-    const [listData, setListData] = useState<List>({
-        id: '1',
-        name: 'Nákupní seznam 25.10',
-        items: [
-            {
-                id: '1',
-                name: 'Jablko 3 kusy',
-                isCompleted: false,
-            },
-            {
-                id: '2',
-                name: 'Hruška 3 kusy',
-                isCompleted: false,
-            },
-        ],
-        users: [
-            {
-                id: '1',
-                name: 'Jan Mráz',
-                isOwner: true,
-            },
-            {
-                id: '2',
-                name: 'Pepa Mráz',
-                isOwner: false,
-            },
-        ],
-    })
+    const listProvider = useLists()
+
+    const listData = listProvider.lists.find((list) => list.id === id) || ({} as List)
 
     const [filter, setFilter] = useState<'all' | 'completed' | 'uncompleted'>('all')
 
@@ -46,16 +20,20 @@ const ListDetail: React.FC = () => {
         return true
     })
 
+    const updateList = (list: List) => {
+        listProvider.updateList(listData.id, list)
+    }
+
     const handleCheckboxChange = (id: string) => {
         const item = listData.items.find((item) => item.id === id)
         if (!item) return
 
         item.isCompleted = !item.isCompleted
-        setListData({ ...listData })
+        updateList({ ...listData })
     }
 
     const onRemove = (id: string) => {
-        setListData({
+        updateList({
             ...listData,
             items: listData.items.filter((item) => item.id !== id),
         })
@@ -68,7 +46,7 @@ const ListDetail: React.FC = () => {
             isCompleted: false,
         }
 
-        setListData({
+        updateList({
             ...listData,
             items: [...listData.items, newItem],
         })
@@ -81,14 +59,14 @@ const ListDetail: React.FC = () => {
             isOwner: false,
         }
 
-        setListData({
+        updateList({
             ...listData,
             users: [...listData.users, newUser],
         })
     }
 
     const onRemoveUser = (userId: string) => {
-        setListData({
+        updateList({
             ...listData,
             users: listData.users.filter((user) => user.id !== userId),
         })
@@ -97,7 +75,7 @@ const ListDetail: React.FC = () => {
     const onListNameChange = (listName: string) => {
         if (listName.length === 0) return
 
-        setListData({
+        updateList({
             ...listData,
             name: listName,
         })
