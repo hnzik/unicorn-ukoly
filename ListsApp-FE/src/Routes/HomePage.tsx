@@ -5,11 +5,11 @@ const HomePage: React.FC = () => {
     const userContext = useUser()
 
     const loginAsOwner = () => {
-        userContext?.login({ id: '1', name: 'Jan Mráz' })
+        userContext?.login({ id: '1', name: 'Honzik' })
     }
 
     const loginAsMember = () => {
-        userContext?.login({ id: '2', name: 'Pepa Mráz' })
+        userContext?.login({ id: '2', name: 'Alice' })
     }
     return (
         <div className='flex flex-col items-center justify-center mt-4'>

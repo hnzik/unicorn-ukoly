@@ -1,16 +1,24 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import ListItem from '../Components/ListItem'
 import { List } from '../Types/List'
 import ListHeader from '../Components/ListHeader'
-import { useLists } from '../Providers/ListProvider'
 import { useParams } from 'react-router'
+import { useGetListById } from '../Hooks/useGetListById'
+import { useUpdateList } from '../Hooks/useUpdateList'
+import { ToastContainer, toast } from 'react-toastify'
 
 const ListDetail: React.FC = () => {
     const { id } = useParams()
+    const {data, isError} = useGetListById(id || '');
+    const updateListMutation = useUpdateList();
 
-    const listProvider = useLists()
+    const [listData, setListData] = useState(data || { id: '', name: '', items: [], users: [] })
 
-    const listData = listProvider.lists.find((list) => list.id === id) || ({} as List)
+    useEffect(() => {
+        if(!data) return;
+        
+        setListData(data)
+    }, [data])
 
     const [filter, setFilter] = useState<'all' | 'completed' | 'uncompleted'>('all')
 
@@ -20,8 +28,17 @@ const ListDetail: React.FC = () => {
         return true
     })
 
-    const updateList = (list: List) => {
-        listProvider.updateList(listData.id, list)
+    const updateList = async (list: List) => {
+        const updatedListData = await updateListMutation.mutateAsync(list);
+        
+        if(!process.env.REACT_APP_IS_MOCK && updatedListData) {
+            toast('Error updating list', {type: 'error'});
+            return;
+        };
+
+        toast('List updated', {type: 'success'});
+
+        process.env.REACT_APP_IS_MOCK ? setListData(list) : setListData(updatedListData);
     }
 
     const handleCheckboxChange = (id: string) => {
@@ -81,23 +98,33 @@ const ListDetail: React.FC = () => {
         })
     }
 
-    return (
+    if(isError) return (
         <div className='max-w-2xl mx-auto p-4 bg-white shadow rounded-lg mt-5'>
-            <ListHeader
-                listName={listData.name}
-                listUsers={listData.users}
-                currentFilter={filter}
-                setFilter={setFilter}
-                onAddItem={onAddItem}
-                onAddUser={onAddUser}
-                onRemoveUser={onRemoveUser}
-                onListNameChange={onListNameChange}
-            />
-
-            {filteredItems.map((item) => (
-                <ListItem key={item.id} item={item} onRemove={onRemove} handleCheckboxChange={handleCheckboxChange} />
-            ))}
+            <h1 className='text-2xl font-bold text-gray-800 mb-4 text-center'>List not found</h1>
         </div>
+    )
+
+    return (
+        <>
+            <ToastContainer position='top-center'/>
+
+            <div className='max-w-2xl mx-auto p-4 bg-white shadow rounded-lg mt-5'>
+                <ListHeader
+                    listName={listData.name}
+                    listUsers={listData.users}
+                    currentFilter={filter}
+                    setFilter={setFilter}
+                    onAddItem={onAddItem}
+                    onAddUser={onAddUser}
+                    onRemoveUser={onRemoveUser}
+                    onListNameChange={onListNameChange}
+                />
+
+                {filteredItems.map((item) => (
+                    <ListItem key={item.id} item={item} onRemove={onRemove} handleCheckboxChange={handleCheckboxChange} />
+                ))}
+            </div>
+        </>
     )
 }
 export default ListDetail

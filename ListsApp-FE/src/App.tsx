@@ -4,12 +4,10 @@ import Layout from './Components/Layout'
 import { UserProvider } from './Providers/UserProvider'
 import HomePage from './Routes/HomePage'
 import Lists from './Routes/Lists'
-import { ListsProvider } from './Providers/ListProvider'
 
 function App() {
     return (
         <UserProvider>
-            <ListsProvider>
                 <BrowserRouter>
                     <Layout />
                     <div>
@@ -20,7 +18,6 @@ function App() {
                         </Routes>
                     </div>
                 </BrowserRouter>
-            </ListsProvider>
         </UserProvider>
     )
 }

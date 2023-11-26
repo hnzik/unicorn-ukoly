@@ -6,6 +6,11 @@ export interface List{
     items: Item[];
     users: User[];
 }
+export interface CreateList{
+    name : string;
+    items: Item[];
+    users: User[];
+}
 
 export interface Item{
     id: string;

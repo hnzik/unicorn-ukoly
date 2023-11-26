@@ -1,26 +1,35 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import CreateNewListModal from '../Components/Modals/CreateNewListModal'
-import { useLists } from '../Providers/ListProvider'
 import { Link } from 'react-router-dom'
 import DeleteListModal from '../Components/Modals/DeleteListModal'
 import { useUser } from '../Providers/UserProvider'
+import { useGetAllLists } from '../Hooks/useGetAllLists'
+import { useDeleteList } from '../Hooks/useDeleteList'
+import { useCreateList } from '../Hooks/useCreateList'
+import { ToastContainer, toast } from 'react-toastify'
 
 const Lists: React.FC = () => {
-    const listProvider = useLists()
     const user = useUser()
+
+    const {data} = useGetAllLists();
+    const createListMutation = useCreateList();
+    const deleteListMutation = useDeleteList();
+
+    const [listData, setListData] = useState(data || [])
+    
+    useEffect(() => {
+        if(!data) return;
+        
+        setListData(data)
+    }, [data])
 
     const [isCreateListModalOpen, setIsCreateListModalOpen] = useState(false)
     const [isDeleteListModalId, setIsDeleteListModalId] = useState('')
 
     if (!user || !user.user || !user.user.id) return <div>To view lists you must be signed in</div>
 
-    let listData = listProvider.getListsByUserId(user.user.id)
-
-    const onCreateList = (listName: string) => {
-        listProvider.setLists([
-            ...listProvider.lists,
-            {
-                id: (listProvider.lists.length + 1).toString(),
+    const onCreateList = async (listName: string) => {
+        const createdList = await createListMutation.mutateAsync({         
                 name: listName,
                 items: [],
                 users: [
@@ -29,21 +38,38 @@ const Lists: React.FC = () => {
                         name: user!.user!.name,
                         isOwner: true,
                     },
-                ],
-            },
-        ])
+                ],         
+        });
 
+        
+        if(!createdList) {
+            toast('Error creating list', {type: 'error'});
+            return;
+        };
+
+        toast('List created', {type: 'success'});
+
+        listData.push(createdList);
+        setListData([...listData]);
         setIsCreateListModalOpen(false)
-        listData = listProvider.getListsByUserId(user!.user!.id)
     }
 
     const onDeleteList = (listId: string) => {
-        listProvider.setLists(listProvider.lists.filter((list) => list.id !== listId))
+        const result = deleteListMutation.mutateAsync(listId);
+
+        if(!result) {
+            toast('Error deleting list', {type: 'error'});
+            return;
+        };
+        toast('List deleted', {type: 'success'});
+
+        setListData(listData.filter((list) => list.id !== listId));
         setIsDeleteListModalId('')
     }
 
     return (
         <div>
+            <ToastContainer position='top-center'/>
             <CreateNewListModal
                 isOpen={isCreateListModalOpen}
                 onClose={() => setIsCreateListModalOpen(false)}

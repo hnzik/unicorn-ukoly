@@ -3,6 +3,7 @@ import { useUser } from '../Providers/UserProvider'
 import ListUsersModal from './Modals/ListUsersModal'
 import { User } from '../Types/User'
 import EditIcon from '@mui/icons-material/Edit'
+
 interface ListHeaderProps {
     listName: string
     listUsers: User[]

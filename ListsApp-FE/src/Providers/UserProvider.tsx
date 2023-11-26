@@ -11,7 +11,7 @@ const UserContext = createContext<UserContextProps | null>(null)
 export const useUser = () => useContext(UserContext)
 
 export const UserProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
-    const [user, setUser] = useState<UserState | null>({ id: '1', name: 'Jan Mráz' })
+    const [user, setUser] = useState<UserState | null>({ id: '1', name: 'Honzik' })
 
     const login = (user: UserState) => {
         setUser(user)
