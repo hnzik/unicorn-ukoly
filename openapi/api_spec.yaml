@@ -73,8 +73,32 @@ paths:
                   isCompleted: false
       responses:
         '201':
-          description: List created
-
+        description: List created
+        content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/List'
+              examples:
+                example1:
+                  value:
+                    - id: '3'
+                      name: 'Nový List'
+                      users:
+                        - id: '1'
+                          name: 'Honzik'
+                          isOwner: true
+                        - id: '2'
+                          name: 'Alice'
+                          isOwner: false
+                      items:
+                        - id: '1'
+                          name: 'Apples'
+                          isCompleted: false
+                        - id: '2'
+                          name: 'Bananas'
+                          isCompleted: true
   /lists/{id}:
     get:
       summary: Retrieve a list by its ID
