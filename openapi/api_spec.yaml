@@ -71,34 +71,28 @@ paths:
                 - id: '1'
                   name: 'Item 1'
                   isCompleted: false
-        responses:
-          '201':
-          description: List created
+      responses:
+        '201':
+          description: List created successfully
           content:
-              application/json:
-                schema:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/List'
-                examples:
-                  example1:
-                    value:
-                      - id: '3'
-                        name: 'Nový List'
-                        users:
-                          - id: '1'
-                            name: 'Honzik'
-                            isOwner: true
-                          - id: '2'
-                            name: 'Alice'
-                            isOwner: false
-                        items:
-                          - id: '1'
-                            name: 'Apples'
-                            isCompleted: false
-                          - id: '2'
-                            name: 'Bananas'
-                            isCompleted: true
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List'
+              example:
+                id: '3'
+                name: 'New List'
+                users:
+                  - id: '1'
+                    name: 'Alice'
+                    isOwner: true
+                  - id: '2'
+                    name: 'Honzik'
+                    isOwner: false
+                items:
+                  - id: '1'
+                    name: 'Item 1'
+                    isCompleted: false
+
   /lists/{id}:
     get:
       summary: Retrieve a list by its ID
@@ -165,6 +159,20 @@ paths:
       responses:
         '200':
           description: List updated
+
+    delete:
+      summary: Delete a list by its ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: List deleted successfully
+        '404':
+          description: List not found
 
 components:
   schemas:
