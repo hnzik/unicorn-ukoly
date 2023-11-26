@@ -15,6 +15,36 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/List'
+              example:
+                - id: '1'
+                  name: 'Grocery List'
+                  users:
+                    - id: '1'
+                      name: 'Alice'
+                      isOwner: true
+                    - id: '2'
+                      name: 'Bob'
+                      isOwner: false
+                  items:
+                    - id: '1'
+                      name: 'Apples'
+                      isCompleted: false
+                    - id: '2'
+                      name: 'Bananas'
+                      isCompleted: true
+                - id: '2'
+                  name: 'Office Supplies'
+                  users:
+                    - id: '3'
+                      name: 'Charlie'
+                      isOwner: true
+                  items:
+                    - id: '3'
+                      name: 'Pens'
+                      isCompleted: false
+                    - id: '4'
+                      name: 'Notebooks'
+                      isCompleted: false
     post:
       summary: Create a new list
       requestBody:
@@ -23,6 +53,16 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/List'
+            example:
+              name: 'New List'
+              users:
+                - id: '1'
+                  name: 'Alice'
+                  isOwner: true
+              items:
+                - id: '1'
+                  name: 'Item 1'
+                  isCompleted: false
       responses:
         '201':
           description: List created
@@ -42,6 +82,23 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/List'
+              example:
+                id: '1'
+                name: 'Grocery List'
+                users:
+                  - id: '1'
+                    name: 'Alice'
+                    isOwner: true
+                  - id: '2'
+                    name: 'Bob'
+                    isOwner: false
+                items:
+                  - id: '1'
+                    name: 'Apples'
+                    isCompleted: false
+                  - id: '2'
+                    name: 'Bananas'
+                    isCompleted: true
     patch:
       summary: Update a list
       parameters:
@@ -56,6 +113,22 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/List'
+            example:
+              name: 'Updated List Name'
+              users:
+                - id: '1'
+                  name: 'Alice'
+                  isOwner: true
+                - id: '2'
+                  name: 'Bob'
+                  isOwner: false
+              items:
+                - id: '1'
+                  name: 'Oranges'
+                  isCompleted: false
+                - id: '2'
+                  name: 'Grapes'
+                  isCompleted: true
       responses:
         '200':
           description: List updated
