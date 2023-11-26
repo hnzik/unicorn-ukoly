@@ -1,0 +1,96 @@
+openapi: 3.0.0
+info:
+  title: List Management API
+  version: 1.0.0
+paths:
+  /lists:
+    get:
+      summary: Retrieve all lists
+      responses:
+        '200':
+          description: A list of lists
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/List'
+    post:
+      summary: Create a new list
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/List'
+      responses:
+        '201':
+          description: List created
+  /lists/{id}:
+    get:
+      summary: Retrieve a list by its ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A single list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List'
+    patch:
+      summary: Update a list
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/List'
+      responses:
+        '200':
+          description: List updated
+components:
+  schemas:
+    List:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ListItem'
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        isOwner:
+          type: boolean
+    ListItem:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        isCompleted:
+          type: boolean
