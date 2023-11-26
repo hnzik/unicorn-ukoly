@@ -15,36 +15,41 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/List'
-              example:
-                - id: '1'
-                  name: 'Grocery List'
-                  users:
+              examples:
+                example1:
+                  value:
                     - id: '1'
-                      name: 'Alice'
-                      isOwner: true
+                      name: 'Grocery List'
+                      users:
+                        - id: '1'
+                          name: 'Alice'
+                          isOwner: true
+                        - id: '2'
+                          name: 'Honzik'
+                          isOwner: false
+                      items:
+                        - id: '1'
+                          name: 'Apples'
+                          isCompleted: false
+                        - id: '2'
+                          name: 'Bananas'
+                          isCompleted: true
                     - id: '2'
-                      name: 'Bob'
-                      isOwner: false
-                  items:
-                    - id: '1'
-                      name: 'Apples'
-                      isCompleted: false
-                    - id: '2'
-                      name: 'Bananas'
-                      isCompleted: true
-                - id: '2'
-                  name: 'Office Supplies'
-                  users:
-                    - id: '3'
-                      name: 'Charlie'
-                      isOwner: true
-                  items:
-                    - id: '3'
-                      name: 'Pens'
-                      isCompleted: false
-                    - id: '4'
-                      name: 'Notebooks'
-                      isCompleted: false
+                      name: 'Office Supplies'
+                      users:
+                        - id: '3'
+                          name: 'Honzik'
+                          isOwner: true
+                        - id: '4'
+                          name: 'Bob'
+                          isOwner: false
+                      items:
+                        - id: '3'
+                          name: 'Pens'
+                          isCompleted: false
+                        - id: '4'
+                          name: 'Notebooks'
+                          isCompleted: false
     post:
       summary: Create a new list
       requestBody:
@@ -59,6 +64,9 @@ paths:
                 - id: '1'
                   name: 'Alice'
                   isOwner: true
+                - id: '2'
+                  name: 'Honzik'
+                  isOwner: false
               items:
                 - id: '1'
                   name: 'Item 1'
@@ -66,6 +74,7 @@ paths:
       responses:
         '201':
           description: List created
+
   /lists/{id}:
     get:
       summary: Retrieve a list by its ID
@@ -90,7 +99,7 @@ paths:
                     name: 'Alice'
                     isOwner: true
                   - id: '2'
-                    name: 'Bob'
+                    name: 'Honzik'
                     isOwner: false
                 items:
                   - id: '1'
@@ -120,7 +129,7 @@ paths:
                   name: 'Alice'
                   isOwner: true
                 - id: '2'
-                  name: 'Bob'
+                  name: 'Honzik'
                   isOwner: false
               items:
                 - id: '1'
@@ -132,10 +141,15 @@ paths:
       responses:
         '200':
           description: List updated
+
 components:
   schemas:
     List:
       type: object
+      required:
+        - name
+        - users
+        - items
       properties:
         id:
           type: string
@@ -149,8 +163,13 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ListItem'
+
     User:
       type: object
+      required:
+        - id
+        - name
+        - isOwner
       properties:
         id:
           type: string
@@ -158,8 +177,13 @@ components:
           type: string
         isOwner:
           type: boolean
+
     ListItem:
       type: object
+      required:
+        - id
+        - name
+        - isCompleted
       properties:
         id:
           type: string
