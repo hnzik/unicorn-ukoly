@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery } from "react-query";
 import { api } from "../Utils/api";
 import { List } from "../Types/List";
 

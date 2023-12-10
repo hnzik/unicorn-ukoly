@@ -6,9 +6,12 @@ import { useParams } from 'react-router'
 import { useGetListById } from '../Hooks/useGetListById'
 import { useUpdateList } from '../Hooks/useUpdateList'
 import { ToastContainer, toast } from 'react-toastify'
+import { useTranslation } from 'react-i18next'
 
 const ListDetail: React.FC = () => {
     const { id } = useParams()
+    const {t} = useTranslation()
+
     const {data, isError} = useGetListById(id || '');
     const updateListMutation = useUpdateList();
 
@@ -32,11 +35,11 @@ const ListDetail: React.FC = () => {
         const updatedListData = await updateListMutation.mutateAsync(list);
         
         if(!process.env.REACT_APP_IS_MOCK && updatedListData) {
-            toast('Error updating list', {type: 'error'});
+            toast(t("pages.listDetail.listUpdateError"), {type: 'error'});
             return;
         };
 
-        toast('List updated', {type: 'success'});
+        toast(t("pages.listDetail.listUpdated"), {type: 'success'});
 
         process.env.REACT_APP_IS_MOCK ? setListData(list) : setListData(updatedListData);
     }
@@ -100,7 +103,7 @@ const ListDetail: React.FC = () => {
 
     if(isError) return (
         <div className='max-w-2xl mx-auto p-4 bg-white shadow rounded-lg mt-5'>
-            <h1 className='text-2xl font-bold text-gray-800 mb-4 text-center'>List not found</h1>
+            <h1 className='text-2xl font-bold text-gray-800 mb-4 text-center'>{t("pages.listDetail.listNotFound")}</h1>
         </div>
     )
 
@@ -108,7 +111,7 @@ const ListDetail: React.FC = () => {
         <>
             <ToastContainer position='top-center'/>
 
-            <div className='max-w-2xl mx-auto p-4 bg-white shadow rounded-lg mt-5'>
+            <div className='max-w-2xl mx-auto p-4 bg-white dark:bg-gray-800 shadow dark:shadow-gray-700/50 rounded-lg mt-5'>
                 <ListHeader
                     listName={listData.name}
                     listUsers={listData.users}
